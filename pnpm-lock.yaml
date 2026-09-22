@@ -14,9 +14,6 @@ importers:
 
   apps/admin:
     dependencies:
-      '@petcare/ui':
-        specifier: workspace:*
-        version: link:../../packages/ui
       react:
         specifier: ^19.2.8
         version: 19.2.8
