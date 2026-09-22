@@ -20,32 +20,34 @@ type Order = {
 type Meta = {
   total: number;
   per_page: number;
-  current_page: number;
+  page?: number;
+  current_page?: number;
+  total_pages?: number;
   last_page?: number;
 };
 
-const STATUS_LIST = ["all", "pending", "confirmed", "processing", "shipped", "delivered", "paid", "cancelled"] as const;
+const STATUS_LIST = ["all", "pending", "paid", "processing", "shipped", "delivered", "cancelled", "refunded"] as const;
 type StatusFilter = (typeof STATUS_LIST)[number];
 
 const STATUS_LABELS: Record<string, string> = {
-  all: "Tất cả",
-  pending: "Chờ xử lý",
-  confirmed: "Đã xác nhận",
-  processing: "Đang xử lý",
-  shipped: "Đang giao",
+  all:       "Tất cả",
+  pending:   "Chờ xử lý",
+  paid:      "Đã thanh toán",
+  processing:"Đang xử lý",
+  shipped:   "Đang giao",
   delivered: "Đã giao",
-  paid: "Đã thanh toán",
   cancelled: "Đã huỷ",
+  refunded:  "Hoàn tiền",
 };
 
 const NEXT_STATUS: Record<string, string[]> = {
-  pending:    ["confirmed", "cancelled"],
-  confirmed:  ["processing", "cancelled"],
+  pending:    ["paid", "cancelled"],
+  paid:       ["processing", "cancelled"],
   processing: ["shipped", "cancelled"],
-  shipped:    ["delivered", "paid", "cancelled"],
-  delivered:  ["paid"],
-  paid:       [],
+  shipped:    ["delivered"],
+  delivered:  ["refunded"],
   cancelled:  [],
+  refunded:   [],
 };
 
 function formatCurrency(amount: number, currency: string) {
@@ -79,8 +81,8 @@ export default function AdminOrdersPage() {
     fetch(`/api/admin/orders?${params}`)
       .then((r) => r.json())
       .then((d) => {
-        setOrders(d.data?.data ?? d.data ?? []);
-        setMeta(d.data?.meta ?? d.data?.pagination ?? null);
+        setOrders(Array.isArray(d.data) ? d.data : (d.data?.data ?? []));
+        setMeta(d.meta ?? d.data?.meta ?? null);
         setLoading(false);
       })
       .catch(() => setLoading(false));
