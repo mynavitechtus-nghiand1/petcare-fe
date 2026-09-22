@@ -1,0 +1,13 @@
+{
+  "name": "petcare",
+  "private": true,
+  "scripts": {
+    "dev:web": "pnpm --filter web dev",
+    "dev:admin": "pnpm --filter admin dev",
+    "build:web": "pnpm --filter web build",
+    "build:admin": "pnpm --filter admin build"
+  },
+  "devDependencies": {
+    "typescript": "^5"
+  }
+}
