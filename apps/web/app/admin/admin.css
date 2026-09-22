@@ -1,0 +1,565 @@
+/* ─── Design Tokens (scoped) ─────────────────────────────── */
+.admin-layout {
+  --color-primary:        #2563eb;
+  --color-primary-hover:  #1d4ed8;
+  --color-primary-light:  #eff6ff;
+  --color-primary-ring:   rgba(37, 99, 235, 0.2);
+
+  --color-bg:             #f8fafc;
+  --color-surface:        #ffffff;
+  --color-border:         #e2e8f0;
+  --color-border-focus:   #2563eb;
+
+  --color-text:           #1e293b;
+  --color-text-muted:     #64748b;
+  --color-text-faint:     #94a3b8;
+
+  --color-success-bg:     #dcfce7;
+  --color-success-text:   #15803d;
+  --color-warning-bg:     #fef3c7;
+  --color-warning-text:   #92400e;
+  --color-danger-bg:      #fee2e2;
+  --color-danger-text:    #dc2626;
+  --color-draft-bg:       #f1f5f9;
+  --color-draft-text:     #64748b;
+
+  --admin-radius-sm:  6px;
+  --admin-radius-md:  8px;
+  --admin-radius-lg:  12px;
+  --admin-radius-xl:  16px;
+
+  --admin-shadow-sm:  0 1px 3px 0 rgb(0 0 0 / 0.06), 0 1px 2px -1px rgb(0 0 0 / 0.04);
+  --admin-shadow-md:  0 4px 12px 0 rgb(0 0 0 / 0.08), 0 2px 6px -2px rgb(0 0 0 / 0.05);
+  --admin-shadow-lg:  0 10px 30px -5px rgb(0 0 0 / 0.12), 0 4px 12px -4px rgb(0 0 0 / 0.07);
+  --admin-shadow-modal: 0 25px 60px rgb(0 0 0 / 0.2), 0 8px 24px rgb(0 0 0 / 0.12);
+}
+
+/* ─── Layout ─────────────────────────────────────────────── */
+.admin-layout {
+  min-height: 100vh;
+  background: var(--color-bg);
+  display: flex;
+  flex-direction: column;
+  font-family: "Inter", system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  line-height: 1.6;
+  color: var(--color-text);
+}
+
+/* ─── Navbar ─────────────────────────────────────────────── */
+.admin-navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  height: 56px;
+  background: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+  gap: 12px;
+  box-shadow: 0 1px 0 0 rgba(0,0,0,0.04);
+}
+
+.admin-navbar-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 800;
+  font-size: 15px;
+  color: var(--color-primary);
+  letter-spacing: -0.03em;
+  text-decoration: none;
+}
+
+.admin-navbar-logo-icon {
+  width: 30px;
+  height: 30px;
+  background: linear-gradient(135deg, #2563eb, #7c3aed);
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  flex-shrink: 0;
+  box-shadow: 0 2px 6px rgba(37,99,235,0.35);
+}
+
+.admin-navbar-env {
+  font-size: 12px;
+  color: var(--color-text-faint);
+  font-weight: 500;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  padding: 2px 10px;
+  border-radius: 99px;
+  letter-spacing: -0.01em;
+}
+
+.admin-navbar-back {
+  margin-left: auto;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-text-muted);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border-radius: var(--admin-radius-md);
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.admin-navbar-back:hover {
+  background: var(--color-bg);
+  color: var(--color-text);
+}
+
+/* ─── Main ───────────────────────────────────────────────── */
+.admin-main {
+  margin-top: 56px;
+  max-width: 960px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 36px 24px 80px;
+  width: 100%;
+}
+
+/* ─── Page Header ────────────────────────────────────────── */
+.admin-page-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 28px;
+  gap: 16px;
+}
+
+.admin-page-title {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--color-text);
+  letter-spacing: -0.04em;
+  line-height: 1.2;
+}
+
+.admin-page-subtitle {
+  font-size: 13px;
+  color: var(--color-text-muted);
+  margin-top: 3px;
+  letter-spacing: -0.01em;
+}
+
+/* ─── Stats Bar ──────────────────────────────────────────── */
+.admin-stats-bar {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  margin-bottom: 28px;
+}
+
+.admin-stat-card {
+  background: var(--color-surface);
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--admin-radius-lg);
+  padding: 18px 20px;
+  box-shadow: var(--admin-shadow-sm);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  transition: box-shadow 0.18s ease, transform 0.18s ease;
+}
+
+.admin-stat-card:hover {
+  box-shadow: var(--admin-shadow-md);
+  transform: translateY(-1px);
+}
+
+.admin-stat-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 11px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  flex-shrink: 0;
+}
+
+.admin-stat-icon.blue  { background: linear-gradient(135deg, #eff6ff, #dbeafe); }
+.admin-stat-icon.green { background: linear-gradient(135deg, #f0fdf4, #dcfce7); }
+.admin-stat-icon.red   { background: linear-gradient(135deg, #fff5f5, #fee2e2); }
+
+.admin-stat-value {
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--color-text);
+  line-height: 1;
+  letter-spacing: -0.05em;
+}
+
+.admin-stat-label {
+  font-size: 12px;
+  color: var(--color-text-muted);
+  font-weight: 600;
+  margin-top: 3px;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+}
+
+/* ─── Product List ───────────────────────────────────────── */
+.admin-product-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* ─── Product Card ───────────────────────────────────────── */
+.admin-product-card {
+  background: var(--color-surface);
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--admin-radius-lg);
+  padding: 16px 20px;
+  box-shadow: var(--admin-shadow-sm);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  transition: box-shadow 0.18s ease, border-color 0.18s ease;
+}
+
+.admin-product-card:hover {
+  box-shadow: var(--admin-shadow-md);
+  border-color: #cbd5e1;
+}
+
+.admin-product-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #eff6ff, #eef2ff);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-size: 22px;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.04);
+}
+
+.admin-product-thumb {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  object-fit: cover;
+  flex-shrink: 0;
+  border: 1.5px solid var(--color-border);
+}
+
+.admin-product-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.admin-product-name-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+  flex-wrap: wrap;
+}
+
+.admin-product-name {
+  font-weight: 700;
+  font-size: 15px;
+  color: var(--color-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  letter-spacing: -0.02em;
+}
+
+.admin-product-meta {
+  font-size: 13px;
+  color: var(--color-text-muted);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  letter-spacing: -0.01em;
+}
+
+.admin-product-brand  { color: var(--color-text); font-weight: 600; }
+.admin-product-price  { color: var(--color-primary); font-weight: 700; }
+.admin-product-price-missing { color: #f59e0b; font-weight: 600; }
+
+.admin-product-description {
+  font-size: 12px;
+  color: var(--color-text-faint);
+  margin-top: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  letter-spacing: -0.01em;
+}
+
+.admin-meta-dot { color: var(--color-border); font-size: 10px; }
+
+/* ─── Status Badges ──────────────────────────────────────── */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 9px;
+  border-radius: 99px;
+  white-space: nowrap;
+  letter-spacing: 0.01em;
+}
+
+.badge::before {
+  content: "";
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.7;
+  display: block;
+}
+
+.badge.published   { background: var(--color-success-bg); color: var(--color-success-text); }
+.badge.draft       { background: var(--color-draft-bg);   color: var(--color-draft-text); }
+.badge.out-of-stock { background: var(--color-danger-bg); color: var(--color-danger-text); }
+
+/* ─── Product Actions ────────────────────────────────────── */
+.admin-product-actions { display: flex; gap: 8px; flex-shrink: 0; }
+
+/* ─── Buttons ────────────────────────────────────────────── */
+.admin-layout .btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 7px 16px;
+  border-radius: var(--admin-radius-md);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-family: inherit;
+  line-height: 1.4;
+  letter-spacing: -0.01em;
+  border: 1.5px solid transparent;
+  white-space: nowrap;
+}
+
+.admin-layout .btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none !important;
+}
+
+.admin-layout .btn-primary {
+  background: var(--color-primary);
+  color: white;
+  border-color: var(--color-primary);
+  box-shadow: 0 2px 6px rgba(37,99,235,0.3);
+}
+
+.admin-layout .btn-primary:hover:not(:disabled) {
+  background: var(--color-primary-hover);
+  border-color: var(--color-primary-hover);
+  box-shadow: 0 4px 14px rgba(37,99,235,0.4);
+  transform: translateY(-1px);
+}
+
+.admin-layout .btn-outline {
+  background: var(--color-surface);
+  color: var(--color-primary);
+  border-color: var(--color-border);
+}
+
+.admin-layout .btn-outline:hover:not(:disabled) {
+  border-color: var(--color-primary);
+  background: var(--color-primary-light);
+}
+
+.admin-layout .btn-danger {
+  background: var(--color-surface);
+  color: var(--color-danger-text);
+  border-color: #fca5a5;
+}
+
+.admin-layout .btn-danger:hover:not(:disabled) {
+  background: var(--color-danger-bg);
+  border-color: #f87171;
+}
+
+.admin-layout .btn-sm { padding: 5px 12px; font-size: 13px; }
+
+/* ─── Loading ────────────────────────────────────────────── */
+.admin-loading {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  color: var(--color-text-muted);
+  font-family: "Inter", system-ui, -apple-system, sans-serif;
+}
+
+.admin-loading-spinner {
+  width: 36px;
+  height: 36px;
+  border: 3px solid var(--color-border);
+  border-top-color: var(--color-primary);
+  border-radius: 50%;
+  animation: admin-spin 0.7s linear infinite;
+}
+
+@keyframes admin-spin { to { transform: rotate(360deg); } }
+
+.admin-loading-text { font-size: 14px; font-weight: 500; color: var(--color-text-muted); }
+
+/* ─── Modal Overlay ──────────────────────────────────────── */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.5);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  padding: 16px;
+}
+
+/* ─── Modal Card ─────────────────────────────────────────── */
+.modal-card {
+  background: var(--color-surface);
+  border-radius: var(--admin-radius-xl);
+  padding: 32px;
+  width: 100%;
+  max-width: 520px;
+  box-shadow: var(--admin-shadow-modal);
+  max-height: 90vh;
+  overflow-y: auto;
+  border: 1px solid var(--color-border);
+  animation: modal-enter 0.2s ease;
+}
+
+@keyframes modal-enter {
+  from { opacity: 0; transform: scale(0.96) translateY(8px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 28px;
+}
+
+.modal-title {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--color-text);
+  letter-spacing: -0.04em;
+}
+
+.modal-close-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--admin-radius-md);
+  border: none;
+  background: var(--color-bg);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-muted);
+  font-size: 18px;
+  line-height: 1;
+  transition: background 0.15s ease, color 0.15s ease;
+  font-family: inherit;
+}
+
+.modal-close-btn:hover { background: var(--color-border); color: var(--color-text); }
+
+/* ─── Form Fields ────────────────────────────────────────── */
+.modal-form { display: flex; flex-direction: column; gap: 18px; }
+
+.form-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+.form-field { display: flex; flex-direction: column; gap: 6px; }
+
+.form-label { font-size: 13px; font-weight: 600; color: #374151; letter-spacing: -0.01em; }
+
+.form-label .required { color: #ef4444; margin-left: 2px; }
+
+.form-input,
+.form-select,
+.form-textarea {
+  width: 100%;
+  padding: 9px 12px;
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--admin-radius-md);
+  font-size: 14px;
+  color: var(--color-text);
+  background: #fafafa;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+  font-family: inherit;
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.form-input:focus,
+.form-select:focus,
+.form-textarea:focus {
+  border-color: var(--color-border-focus);
+  background: white;
+  box-shadow: 0 0 0 3px var(--color-primary-ring);
+}
+
+.form-input:disabled,
+.form-input[disabled] { background: #f1f5f9; color: var(--color-text-muted); cursor: not-allowed; }
+
+.form-select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' viewBox='0 0 24 24' stroke='%2364748b' stroke-width='2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 36px;
+  cursor: pointer;
+}
+
+.form-textarea { resize: vertical; min-height: 88px; line-height: 1.5; }
+
+/* ─── Modal Footer ───────────────────────────────────────── */
+.modal-error {
+  margin: 12px 0 0;
+  padding: 10px 14px;
+  background: var(--color-danger-bg);
+  color: var(--color-danger-text);
+  border-radius: var(--admin-radius-md);
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.modal-footer {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid var(--color-border);
+}
+
+/* ─── Empty State ────────────────────────────────────────── */
+.admin-empty { text-align: center; padding: 64px 24px; color: var(--color-text-muted); }
+.admin-empty-icon { font-size: 48px; margin-bottom: 12px; opacity: 0.5; }
+.admin-empty-text { font-size: 15px; font-weight: 600; color: var(--color-text-muted); }
