@@ -4,6 +4,7 @@ import Link from "next/link";
 import "./admin.css";
 
 type Brand = { id: number; name: string };
+type Category = { id: number; name: string };
 type Product = {
   id: number;
   name: string;
@@ -16,6 +17,7 @@ type Product = {
   image_url: string | null;
   prices: { currency: string; amount: number }[];
   inventory: { quantity: number } | null;
+  categories: { id: number; name: string }[];
 };
 
 type Form = {
@@ -27,11 +29,12 @@ type Form = {
   price: string;
   quantity: string;
   image_url: string;
+  category_ids: number[];
 };
 
 const EMPTY_FORM: Form = {
   name: "", sku: "", brand_id: "1", status: "published",
-  description: "", price: "", quantity: "", image_url: "",
+  description: "", price: "", quantity: "", image_url: "", category_ids: [],
 };
 
 type ModalMode = "edit" | "create" | null;
@@ -39,6 +42,7 @@ type ModalMode = "edit" | "create" | null;
 export default function AdminPage() {
   const [products, setProducts] = useState<Product[]>([]);
   const [brands, setBrands] = useState<Brand[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
   const [modalMode, setModalMode] = useState<ModalMode>(null);
   const [editId, setEditId] = useState<number | null>(null);
@@ -51,9 +55,11 @@ export default function AdminPage() {
     Promise.all([
       fetch("/api/admin/products?per_page=100").then((r) => r.json()),
       fetch("/api/admin/brands").then((r) => r.json()),
-    ]).then(([products, brands]) => {
+      fetch("/api/admin/categories").then((r) => r.json()),
+    ]).then(([products, brands, cats]) => {
       setProducts(products.data?.data ?? products.data ?? []);
       setBrands(brands.data ?? []);
+      setCategories(cats.data ?? []);
       setLoading(false);
     }).catch(() => setLoading(false));
   }, []);
@@ -73,6 +79,7 @@ export default function AdminPage() {
       price: String(p.prices[0]?.amount ?? ""),
       quantity: String(p.inventory?.quantity ?? ""),
       image_url: p.image_url ?? "",
+      category_ids: p.categories?.map((c) => c.id) ?? [],
     });
     setModalMode("edit");
   }
@@ -106,6 +113,7 @@ export default function AdminPage() {
           brand_id: Number(form.brand_id),
           status: form.status,
           description: form.description || null,
+          category_ids: form.category_ids,
           ...(form.price !== "" ? { price: Number(form.price) } : {}),
           ...(form.quantity !== "" ? { quantity: Number(form.quantity) } : {}),
         }),
@@ -138,6 +146,7 @@ export default function AdminPage() {
             image_url: imageUrl,
             prices: updated?.prices?.length ? updated.prices : p.prices,
             inventory: updated?.inventory ?? p.inventory,
+            categories: categories.filter((c) => form.category_ids.includes(c.id)),
           }
         )
       );
@@ -164,6 +173,7 @@ export default function AdminPage() {
           brand_id: Number(form.brand_id),
           status: form.status,
           description: form.description || null,
+          category_ids: form.category_ids,
           price: Number(form.price),
           quantity: Number(form.quantity),
         }),
@@ -370,6 +380,43 @@ export default function AdminPage() {
                   <option value="draft">Draft</option>
                 </select>
               </div>
+
+              {categories.length > 0 && (
+                <div className="form-field">
+                  <label className="form-label">Danh mục</label>
+                  <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginTop: 2 }}>
+                    {categories.map((c) => {
+                      const checked = form.category_ids.includes(c.id);
+                      return (
+                        <label key={c.id} style={{
+                          display: "inline-flex", alignItems: "center", gap: 6,
+                          padding: "5px 12px", borderRadius: 99,
+                          border: `1.5px solid ${checked ? "var(--color-primary)" : "var(--color-border)"}`,
+                          background: checked ? "var(--color-primary-light)" : "#fafafa",
+                          color: checked ? "var(--color-primary)" : "var(--color-text-muted)",
+                          fontSize: 13, fontWeight: 600, cursor: "pointer",
+                          transition: "all 0.15s ease",
+                        }}>
+                          <input
+                            type="checkbox"
+                            checked={checked}
+                            style={{ display: "none" }}
+                            onChange={() =>
+                              setForm((f) => ({
+                                ...f,
+                                category_ids: checked
+                                  ? f.category_ids.filter((id) => id !== c.id)
+                                  : [...f.category_ids, c.id],
+                              }))
+                            }
+                          />
+                          {c.name}
+                        </label>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
 
               <div className="form-field">
                 <label className="form-label">Mô tả</label>
