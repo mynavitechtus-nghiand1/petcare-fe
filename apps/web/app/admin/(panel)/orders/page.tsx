@@ -24,7 +24,7 @@ type Meta = {
   last_page?: number;
 };
 
-const STATUS_LIST = ["all", "pending", "confirmed", "processing", "shipped", "delivered", "cancelled"] as const;
+const STATUS_LIST = ["all", "pending", "confirmed", "processing", "shipped", "delivered", "paid", "cancelled"] as const;
 type StatusFilter = (typeof STATUS_LIST)[number];
 
 const STATUS_LABELS: Record<string, string> = {
@@ -34,6 +34,7 @@ const STATUS_LABELS: Record<string, string> = {
   processing: "Đang xử lý",
   shipped: "Đang giao",
   delivered: "Đã giao",
+  paid: "Đã thanh toán",
   cancelled: "Đã huỷ",
 };
 
@@ -41,8 +42,9 @@ const NEXT_STATUS: Record<string, string[]> = {
   pending:    ["confirmed", "cancelled"],
   confirmed:  ["processing", "cancelled"],
   processing: ["shipped", "cancelled"],
-  shipped:    ["delivered", "cancelled"],
-  delivered:  [],
+  shipped:    ["delivered", "paid", "cancelled"],
+  delivered:  ["paid"],
+  paid:       [],
   cancelled:  [],
 };
 
@@ -77,8 +79,8 @@ export default function AdminOrdersPage() {
     fetch(`/api/admin/orders?${params}`)
       .then((r) => r.json())
       .then((d) => {
-        setOrders(d.data?.data ?? []);
-        setMeta(d.data?.meta ?? null);
+        setOrders(d.data?.data ?? d.data ?? []);
+        setMeta(d.data?.meta ?? d.data?.pagination ?? null);
         setLoading(false);
       })
       .catch(() => setLoading(false));
