@@ -138,7 +138,7 @@ export default function AdminOrdersPage() {
         <div>
           <h1 className="admin-page-title">Quản lý đơn hàng</h1>
           <p className="admin-page-subtitle">
-            {meta ? `${meta.total} đơn hàng tổng cộng` : "Đang tải..."}
+            {loading ? "Đang tải..." : meta ? `${meta.total} đơn hàng tổng cộng` : `${orders.length} đơn hàng`}
           </p>
         </div>
       </div>
