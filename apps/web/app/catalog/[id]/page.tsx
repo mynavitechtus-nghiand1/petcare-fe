@@ -1,5 +1,6 @@
 import { Card } from "@petcare/ui";
 import Link from "next/link";
+import Image from "next/image";
 import { notFound } from "next/navigation";
 import { apiFetch } from "../../../lib/api";
 import { AddToCartButton } from "../../components/AddToCartButton";
@@ -49,11 +50,14 @@ export default async function ProductDetailPage({ params }: Props) {
       <div className="grid md:grid-cols-2 gap-10">
         {/* Ảnh / placeholder */}
         {product.image_url ? (
-          <div className="rounded-2xl overflow-hidden min-h-80 shadow-md">
-            <img
+          <div className="relative h-80 rounded-2xl overflow-hidden shadow-md">
+            <Image
               src={product.image_url}
               alt={product.name}
-              className="w-full h-full object-cover min-h-80"
+              fill
+              className="object-cover"
+              sizes="(max-width: 768px) 100vw, 50vw"
+              priority
             />
           </div>
         ) : (

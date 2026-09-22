@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import Image from "next/image";
 
 type CartItem = {
   id: number;
@@ -96,9 +97,9 @@ export default function CartPage() {
               return (
                 <div key={item.id} className={`bg-white border border-slate-200 rounded-xl p-4 flex items-center gap-4 shadow-sm transition-opacity ${isLoading ? "opacity-50" : ""}`}>
                   {/* Image / icon */}
-                  <div className="w-14 h-14 rounded-lg flex-shrink-0 overflow-hidden">
+                  <div className="relative w-14 h-14 rounded-lg flex-shrink-0 overflow-hidden">
                     {item.product.image_url ? (
-                      <img src={item.product.image_url} alt={item.product.name} className="w-full h-full object-cover" />
+                      <Image src={item.product.image_url} alt={item.product.name} fill className="object-cover" sizes="56px" />
                     ) : (
                       <div className="w-full h-full bg-gradient-to-br from-blue-50 to-slate-100 flex items-center justify-center">
                         <span className="text-2xl">🐾</span>

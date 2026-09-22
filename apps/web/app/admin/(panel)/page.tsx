@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
+import Image from "next/image";
 
 type Brand = { id: number; name: string };
 type Category = { id: number; name: string };
@@ -280,7 +281,7 @@ export default function AdminProductsPage() {
           {products.map((p) => (
             <div key={p.id} className="admin-product-card">
               {p.image_url ? (
-                <img src={p.image_url} alt={p.name} className="admin-product-thumb" />
+                <Image src={p.image_url} alt={p.name} width={48} height={48} className="admin-product-thumb" />
               ) : (
                 <div className="admin-product-icon">🐾</div>
               )}

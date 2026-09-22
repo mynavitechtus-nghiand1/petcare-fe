@@ -1,5 +1,6 @@
 import { Card } from "@petcare/ui";
 import Link from "next/link";
+import Image from "next/image";
 import { Suspense } from "react";
 import { CatalogClient } from "../components/CatalogClient";
 import { AddToCartButton } from "../components/AddToCartButton";
@@ -68,11 +69,15 @@ export default async function CatalogPage({ searchParams }: Props) {
             <Card key={p.id} className="flex flex-col h-full">
               <Link href={`/catalog/${p.id}`} className="flex-1">
                 {p.image_url ? (
-                  <img
-                    src={p.image_url}
-                    alt={p.name}
-                    className="w-full h-36 object-cover rounded-lg mb-3"
-                  />
+                  <div className="relative w-full h-36 rounded-lg mb-3 overflow-hidden">
+                    <Image
+                      src={p.image_url}
+                      alt={p.name}
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 768px) 50vw, 25vw"
+                    />
+                  </div>
                 ) : (
                   <div className="w-full h-36 bg-gradient-to-br from-blue-50 to-slate-100 rounded-lg mb-3 flex flex-col items-center justify-center gap-1">
                     <span className="text-3xl">🐾</span>
