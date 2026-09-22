@@ -2,19 +2,27 @@
 import { useState, useEffect, useCallback } from "react";
 
 type OrderItem = {
-  product: { name: string };
+  id: number;
+  product_name: string;
+  sku: string;
+  unit_price: number;
   quantity: number;
-  price: number;
+  line_total: number;
+  currency: string;
 };
 
 type Order = {
   id: number;
   status: string;
-  total_amount: number;
+  subtotal_amount: number;
   currency: string;
   created_at: string;
-  user: { name: string; email: string };
+  shipping_name: string | null;
+  shipping_phone: string | null;
+  shipping_address: string | null;
+  user?: { name: string; email: string };
   items: OrderItem[];
+  payments?: { status: string; amount: number; provider: string }[];
 };
 
 type Meta = {
@@ -185,13 +193,13 @@ export default function AdminOrdersPage() {
                 </div>
                 <div className="admin-list-card-info">
                   <div className="admin-list-card-name">
-                    #{o.id} — {o.user?.name ?? "Khách hàng"}
+                    #{o.id} — {o.shipping_name ?? "Khách hàng"}
                   </div>
                   <div className="admin-list-card-meta">
-                    {o.user?.email && <span style={{ marginRight: 8 }}>{o.user.email}</span>}
+                    {o.shipping_phone && <span style={{ marginRight: 8 }}>{o.shipping_phone}</span>}
                     <span style={{ marginRight: 8 }}>{formatDate(o.created_at)}</span>
                     <span style={{ fontWeight: 700, color: "var(--color-primary)" }}>
-                      {formatCurrency(o.total_amount, o.currency ?? "VND")}
+                      {formatCurrency(o.subtotal_amount, o.currency ?? "VND")}
                     </span>
                   </div>
                 </div>
@@ -250,10 +258,10 @@ export default function AdminOrdersPage() {
                 display: "flex", flexDirection: "column", gap: 4,
               }}>
                 <div style={{ fontSize: 13, fontWeight: 700, color: "var(--color-text)" }}>
-                  {selectedOrder.user?.name ?? "—"}
+                  {selectedOrder.shipping_name ?? "—"}
                 </div>
                 <div style={{ fontSize: 13, color: "var(--color-text-muted)" }}>
-                  {selectedOrder.user?.email ?? "—"}
+                  {selectedOrder.shipping_phone ?? ""}{selectedOrder.shipping_address ? ` · ${selectedOrder.shipping_address}` : ""}
                 </div>
                 <div style={{ fontSize: 12, color: "var(--color-text-faint)", marginTop: 2 }}>
                   {formatDate(selectedOrder.created_at)}
@@ -275,10 +283,10 @@ export default function AdminOrdersPage() {
                         fontSize: 13,
                       }}>
                         <span style={{ fontWeight: 600, color: "var(--color-text)" }}>
-                          {item.product?.name ?? "Sản phẩm"}
+                          {item.product_name}
                         </span>
                         <span style={{ color: "var(--color-text-muted)" }}>
-                          x{item.quantity} · {formatCurrency(item.price, selectedOrder.currency ?? "VND")}
+                          x{item.quantity} · {formatCurrency(item.unit_price, selectedOrder.currency ?? "VND")}
                         </span>
                       </div>
                     ))}
@@ -296,7 +304,7 @@ export default function AdminOrdersPage() {
               }}>
                 <span style={{ fontWeight: 700, fontSize: 14 }}>Tổng cộng</span>
                 <span style={{ fontWeight: 800, fontSize: 16, color: "var(--color-primary)" }}>
-                  {formatCurrency(selectedOrder.total_amount, selectedOrder.currency ?? "VND")}
+                  {formatCurrency(selectedOrder.subtotal_amount, selectedOrder.currency ?? "VND")}
                 </span>
               </div>
 
