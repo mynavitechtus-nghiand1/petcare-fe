@@ -1,7 +1,5 @@
 "use client";
 import { useState, useEffect } from "react";
-import Link from "next/link";
-import "./admin.css";
 
 type Brand = { id: number; name: string };
 type Category = { id: number; name: string };
@@ -39,7 +37,7 @@ const EMPTY_FORM: Form = {
 
 type ModalMode = "edit" | "create" | null;
 
-export default function AdminPage() {
+export default function AdminProductsPage() {
   const [products, setProducts] = useState<Product[]>([]);
   const [brands, setBrands] = useState<Brand[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
@@ -234,106 +232,92 @@ export default function AdminPage() {
   }
 
   return (
-    <div className="admin-layout">
-      {/* Navbar */}
-      <nav className="admin-navbar">
-        <div className="admin-navbar-logo">
-          <div className="admin-navbar-logo-icon">🐾</div>
-          PetCare+ Admin
+    <div className="admin-page">
+      <div className="admin-page-header">
+        <div>
+          <h1 className="admin-page-title">Quản lý sản phẩm</h1>
+          <p className="admin-page-subtitle">{totalProducts} sản phẩm trong hệ thống</p>
         </div>
-        <span className="admin-navbar-env">petcare-be · production</span>
-        <Link href="/" className="admin-navbar-back">← Về trang web</Link>
-      </nav>
+        <button className="btn btn-primary" onClick={openCreate}>
+          <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+          </svg>
+          Thêm sản phẩm
+        </button>
+      </div>
 
-      {/* Main */}
-      <main className="admin-main">
-        <div className="admin-page-header">
+      <div className="admin-stats-bar">
+        <div className="admin-stat-card">
+          <div className="admin-stat-icon blue">📦</div>
           <div>
-            <h1 className="admin-page-title">Quản lý sản phẩm</h1>
-            <p className="admin-page-subtitle">{totalProducts} sản phẩm trong hệ thống</p>
-          </div>
-          <button className="btn btn-primary" onClick={openCreate}>
-            <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-            </svg>
-            Thêm sản phẩm
-          </button>
-        </div>
-
-        <div className="admin-stats-bar">
-          <div className="admin-stat-card">
-            <div className="admin-stat-icon blue">📦</div>
-            <div>
-              <div className="admin-stat-value">{totalProducts}</div>
-              <div className="admin-stat-label">Tổng sản phẩm</div>
-            </div>
-          </div>
-          <div className="admin-stat-card">
-            <div className="admin-stat-icon green">✅</div>
-            <div>
-              <div className="admin-stat-value">{publishedCount}</div>
-              <div className="admin-stat-label">Đang bán</div>
-            </div>
-          </div>
-          <div className="admin-stat-card">
-            <div className="admin-stat-icon red">⚠️</div>
-            <div>
-              <div className="admin-stat-value">{outOfStockCount}</div>
-              <div className="admin-stat-label">Hết hàng</div>
-            </div>
+            <div className="admin-stat-value">{totalProducts}</div>
+            <div className="admin-stat-label">Tổng sản phẩm</div>
           </div>
         </div>
-
-        {products.length === 0 ? (
-          <div className="admin-empty">
-            <div className="admin-empty-icon">📭</div>
-            <p className="admin-empty-text">Chưa có sản phẩm nào. Thêm sản phẩm đầu tiên!</p>
+        <div className="admin-stat-card">
+          <div className="admin-stat-icon green">✅</div>
+          <div>
+            <div className="admin-stat-value">{publishedCount}</div>
+            <div className="admin-stat-label">Đang bán</div>
           </div>
-        ) : (
-          <div className="admin-product-list">
-            {products.map((p) => (
-              <div key={p.id} className="admin-product-card">
-                {p.image_url ? (
-                  <img src={p.image_url} alt={p.name} className="admin-product-thumb" />
-                ) : (
-                  <div className="admin-product-icon">🐾</div>
-                )}
-                <div className="admin-product-info">
-                  <div className="admin-product-name-row">
-                    <span className="admin-product-name">{p.name}</span>
-                    {getStatusBadge(p)}
-                  </div>
-                  <div className="admin-product-meta">
-                    <span className="admin-product-brand">{p.brand?.name ?? "—"}</span>
-                    <span className="admin-meta-dot">·</span>
-                    <span>SKU: {p.sku}</span>
-                    <span className="admin-meta-dot">·</span>
-                    {p.prices[0]?.amount
-                      ? <span className="admin-product-price">{p.prices[0].amount.toLocaleString("vi-VN")}đ</span>
-                      : <span className="admin-product-price-missing">Chưa có giá</span>
-                    }
-                    <span className="admin-meta-dot">·</span>
-                    <span>Kho: {p.inventory?.quantity ?? 0}</span>
-                  </div>
-                  {p.description && <p className="admin-product-description">{p.description}</p>}
+        </div>
+        <div className="admin-stat-card">
+          <div className="admin-stat-icon red">⚠️</div>
+          <div>
+            <div className="admin-stat-value">{outOfStockCount}</div>
+            <div className="admin-stat-label">Hết hàng</div>
+          </div>
+        </div>
+      </div>
+
+      {products.length === 0 ? (
+        <div className="admin-empty">
+          <div className="admin-empty-icon">📭</div>
+          <p className="admin-empty-text">Chưa có sản phẩm nào. Thêm sản phẩm đầu tiên!</p>
+        </div>
+      ) : (
+        <div className="admin-product-list">
+          {products.map((p) => (
+            <div key={p.id} className="admin-product-card">
+              {p.image_url ? (
+                <img src={p.image_url} alt={p.name} className="admin-product-thumb" />
+              ) : (
+                <div className="admin-product-icon">🐾</div>
+              )}
+              <div className="admin-product-info">
+                <div className="admin-product-name-row">
+                  <span className="admin-product-name">{p.name}</span>
+                  {getStatusBadge(p)}
                 </div>
-                <div className="admin-product-actions">
-                  <button className="btn btn-outline btn-sm" onClick={() => openEdit(p)}>Sửa</button>
-                  <button
-                    className="btn btn-danger btn-sm"
-                    onClick={() => deleteProduct(p.id)}
-                    disabled={deletingId === p.id}
-                  >
-                    {deletingId === p.id ? "..." : "Xóa"}
-                  </button>
+                <div className="admin-product-meta">
+                  <span className="admin-product-brand">{p.brand?.name ?? "—"}</span>
+                  <span className="admin-meta-dot">·</span>
+                  <span>SKU: {p.sku}</span>
+                  <span className="admin-meta-dot">·</span>
+                  {p.prices[0]?.amount
+                    ? <span className="admin-product-price">{p.prices[0].amount.toLocaleString("vi-VN")}đ</span>
+                    : <span className="admin-product-price-missing">Chưa có giá</span>
+                  }
+                  <span className="admin-meta-dot">·</span>
+                  <span>Kho: {p.inventory?.quantity ?? 0}</span>
                 </div>
+                {p.description && <p className="admin-product-description">{p.description}</p>}
               </div>
-            ))}
-          </div>
-        )}
-      </main>
+              <div className="admin-product-actions">
+                <button className="btn btn-outline btn-sm" onClick={() => openEdit(p)}>Sửa</button>
+                <button
+                  className="btn btn-danger btn-sm"
+                  onClick={() => deleteProduct(p.id)}
+                  disabled={deletingId === p.id}
+                >
+                  {deletingId === p.id ? "..." : "Xóa"}
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
 
-      {/* Modal */}
       {modalMode && (
         <div className="modal-overlay" onClick={(e) => e.target === e.currentTarget && closeModal()}>
           <div className="modal-card">
