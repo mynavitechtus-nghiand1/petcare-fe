@@ -31,7 +31,7 @@ export default function AdminCategoriesPage() {
     fetch("/api/admin/categories")
       .then((r) => r.json())
       .then((d) => {
-        setCategories(d.data ?? []);
+        setCategories(d.data?.data ?? d.data ?? []);
         setLoading(false);
       })
       .catch(() => setLoading(false));

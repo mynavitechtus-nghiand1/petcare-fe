@@ -30,7 +30,7 @@ export default function AdminBrandsPage() {
     fetch("/api/admin/brands")
       .then((r) => r.json())
       .then((d) => {
-        setBrands(d.data ?? []);
+        setBrands(d.data?.data ?? d.data ?? []);
         setLoading(false);
       })
       .catch(() => setLoading(false));
